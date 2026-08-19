@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: jardin
+
+  datasource:
+    url: ${URL}
+    username: ${User}
+    password: ${Password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      database: mysql
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
