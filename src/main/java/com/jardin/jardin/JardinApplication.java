@@ -33,7 +33,7 @@ public class JardinApplication extends Application {
 
 		String titulo = springContext.getBean("titulo", String.class);
 		// Crear la escena
-		Scene scene = new Scene(fxmlLoader.load());
+		Scene scene = new Scene(fxmlLoader.load(getClass().getResource("/Home.fxml")));
 
 		// Mostrar ventana
 		stage.setScene(scene);

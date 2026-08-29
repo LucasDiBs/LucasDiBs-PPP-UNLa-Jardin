@@ -12,13 +12,8 @@ import java.util.ResourceBundle;
 @Controller
 public class ViewController implements Initializable {
 
-    @FXML
-    public Label Hola;
 
-    public void cambio(){
 
-        Hola.setText("Cambio a Hola Mundo");
-    }
     @Bean
     String titulo(){
         return "Hola Mundo";
@@ -26,7 +21,7 @@ public class ViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cambio();
+        
     }
 }
 
