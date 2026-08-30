@@ -9,7 +9,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0">
@@ -29,7 +28,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="textUser">
+                  <TextField fx:id="textUser" onKeyTyped="#eventKey">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -39,12 +38,12 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="textPassword">
+                  <PasswordField fx:id="textPassword" onKeyTyped="#eventKey">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </PasswordField>
-                  <Button fx:id="btnLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Ingresar">
+                  <Button fx:id="botonLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eventAction" text="Ingresar">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
