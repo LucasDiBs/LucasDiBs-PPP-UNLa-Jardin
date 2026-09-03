@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="200.0" prefWidth="350.0" spacing="20.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewInfanteBajaController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    
+    <Label text="¿Estás seguro de dar de baja a este infante?" textAlignment="CENTER" wrapText="true">
+        <font>
+            <Font name="System Bold" size="14.0" />
+        </font>
+    </Label>
+    
+    <Label fx:id="lblDatosInfante" text="Nombre Apellido - DNI: 000" textFill="#545454">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    
+    <HBox alignment="CENTER" spacing="20.0">
+        <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+        <Button mnemonicParsing="false" onAction="#confirmarBaja" style="-fx-background-color: #F44336; -fx-text-fill: white;" text="Confirmar Baja" />
+    </HBox>
+</VBox>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="450.0" prefWidth="400.0" spacing="15.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewInfanteFormController">
+    <padding>
+        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+    </padding>
+    
+    <Label text="Ingresar Datos del Infante">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    
+    <TextField fx:id="txtNombre" promptText="Nombre" />
+    <TextField fx:id="txtApellido" promptText="Apellido" />
+    <TextField fx:id="txtDni" promptText="DNI (Solo números)" />
+    <TextField fx:id="txtDireccion" promptText="Dirección" />
+    
+    <HBox spacing="10.0">
+        <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" promptText="Fecha Nacimiento" HBox.hgrow="ALWAYS" />
+        <TextField fx:id="txtEdadMeses" prefWidth="120.0" promptText="Edad (Meses)" />
+    </HBox>
+    
+    <TextField fx:id="txtSala" promptText="Sala asignada" />
+    
+    <HBox alignment="CENTER_RIGHT" spacing="15.0">
+        <VBox.margin>
+            <Insets top="10.0" />
+        </VBox.margin>
+        <Button mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
+        <Button mnemonicParsing="false" onAction="#guardar" style="-fx-background-color: #4CAF50; -fx-text-fill: white;" text="Guardar en MySQL" />
+    </HBox>
+</VBox>
