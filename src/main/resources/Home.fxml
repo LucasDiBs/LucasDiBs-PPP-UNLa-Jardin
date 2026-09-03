@@ -41,7 +41,7 @@
                         <Insets left="150.0" top="100.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="textUser" >
+                  <TextField fx:id="textUser">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -59,7 +59,7 @@
                         <Font size="18.0" />
                      </font>
                   </PasswordField>
-                  <Button fx:id="botonLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false"  style="-fx-background-color: #80000;" text="Ingresar">
+                  <Button fx:id="botonLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #80000;" text="Ingresar">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>
