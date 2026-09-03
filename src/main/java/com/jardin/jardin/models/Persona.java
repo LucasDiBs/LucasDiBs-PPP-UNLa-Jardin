@@ -1,19 +1,29 @@
 package com.jardin.jardin.models;
 
-
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
+@MappedSuperclass
 @Getter
+@Setter
 @NoArgsConstructor
-public class Persona {
-    private int personaId;
+public abstract class Persona {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer personaId;
+
+    @Column(unique = true, nullable = false)
     private int dni;
+
+    @Column(nullable = false)
     private String nombre;
+
+    @Column(nullable = false)
     private String apellido;
+
     private String direccion;
 
     public Persona(String direccion, String apellido, String nombre, int dni) {
