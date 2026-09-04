@@ -10,16 +10,51 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="835.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewAdminFormController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewAdminFormController">
    <children>
-      <HBox prefHeight="111.0" prefWidth="835.0" style="-fx-background-color: #500000;">
+      <HBox maxHeight="250.0" maxWidth="1143.0" prefHeight="90.0" prefWidth="1143.0" style="-fx-background-color: #500000;">
          <children>
-            <ImageView fitHeight="127.0" fitWidth="151.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="90.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../assets/descarga.jpg" />
                </image>
             </ImageView>
+            <Label text="Jardin Maternal Azucena Villaflor" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="40.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" top="15.0" />
+               </HBox.margin>
+            </Label>
+            <Button mnemonicParsing="false" prefHeight="89.0" prefWidth="119.0" style="-fx-background-color: #500000;" text="Infantes" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="35.0" />
+               </HBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="86.0" prefWidth="100.0" style="-fx-background-color: #500000;" text="Admins" textFill="WHITE">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="153.0" style="-fx-background-color: #500000;" text="Nuevo Admin" textFill="WHITE">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Button>
          </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
       <Label alignment="CENTER" text="Resgitro de administradores">
          <opaqueInsets>
@@ -29,12 +64,12 @@
             <Font size="39.0" />
          </font>
          <VBox.margin>
-            <Insets left="185.0" />
+            <Insets left="250.0" top="25.0" />
          </VBox.margin>
       </Label>
       <Label text="DNI">
          <VBox.margin>
-            <Insets left="150.0" top="25.0" />
+            <Insets left="250.0" top="25.0" />
          </VBox.margin>
          <font>
             <Font name="System Bold" size="20.0" />
@@ -42,59 +77,59 @@
       </Label>
       <TextField fx:id="txtDni" maxWidth="600.0" minHeight="0.0" minWidth="1.0" prefHeight="25.0" prefWidth="686.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Nombre">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
-         <padding>
-            <Insets left="150.0" />
-         </padding>
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
       </Label>
       <TextField fx:id="txtNombre" maxWidth="600.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Apellido">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
-         <padding>
-            <Insets left="150.0" />
-         </padding>
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
       </Label>
       <TextField fx:id="txtApellido" maxWidth="600.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Teléfono">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
-         <padding>
-            <Insets left="150.0" />
-         </padding>
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
       </Label>
       <TextField fx:id="txtTelefono" maxWidth="600.0" minHeight="0.0" minWidth="1.0" prefHeight="25.0" prefWidth="686.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Direccion">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
-         <padding>
-            <Insets left="150.0" />
-         </padding>
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
       </Label>
       <TextField fx:id="txtDireccion" maxWidth="600.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Usuario">
@@ -102,30 +137,30 @@
             <Font name="System Bold" size="20.0" />
          </font>
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </Label>
       <TextField fx:id="txtUsuario" maxWidth="600.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Label text="Contraseña">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
-         <padding>
-            <Insets left="150.0" />
-         </padding>
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
       </Label>
       <TextField fx:id="txtPassword" maxHeight="25.0" maxWidth="602.0" prefHeight="25.0" prefWidth="602.0">
          <VBox.margin>
-            <Insets left="150.0" />
+            <Insets left="250.0" />
          </VBox.margin>
       </TextField>
       <Button mnemonicParsing="false" onAction="#guardar" prefHeight="52.0" prefWidth="347.0" style="-fx-background-color: #4CAF50; -fx-text-fill: White;" text="Registrar Administrador">
          <VBox.margin>
-            <Insets left="275.0" top="25.0" />
+            <Insets left="400.0" top="25.0" />
          </VBox.margin>
          <font>
             <Font size="25.0" />

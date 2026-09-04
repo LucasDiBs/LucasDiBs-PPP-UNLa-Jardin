@@ -71,7 +71,7 @@ public class ViewAdminFormController {
             adminActual.setPassword(txtPassword.getText());
 
 
-            adminService.guardar(adminActual);
+            adminService.guardarAdmin(adminActual);
 
         } catch (Exception e) {
             System.out.println("Error al guardar: Verifica los datos ingresados.");
