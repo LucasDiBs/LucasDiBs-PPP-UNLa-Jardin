@@ -24,6 +24,7 @@
     <TextField fx:id="txtApellido" promptText="Apellido" />
     <TextField fx:id="txtDni" promptText="DNI (Solo números)" />
     <TextField fx:id="txtDireccion" promptText="Dirección" />
+   <TextField fx:id="txtTelefono" promptText="Teléfono" />
     
     <HBox spacing="10.0">
         <DatePicker fx:id="dpFechaNacimiento" maxWidth="Infinity" promptText="Fecha Nacimiento" HBox.hgrow="ALWAYS" />

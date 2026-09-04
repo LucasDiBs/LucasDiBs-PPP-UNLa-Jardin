@@ -3,9 +3,9 @@ spring:
     name: jardin
 
   datasource:
-    url: jdbc:mysql://localhost:3306/jardin_unla
-    username: root
-    password: root12345678
+    url: ${url}
+    username: ${User}
+    password: ${Password}
     driver-class-name: com.mysql.cj.jdbc.Driver
     
   jpa:
