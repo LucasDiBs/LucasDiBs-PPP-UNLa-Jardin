@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewLogInController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #F9F9F9;">
          <children>
@@ -41,7 +41,7 @@
                         <Insets left="150.0" top="100.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField fx:id="textUser">
+                  <TextField fx:id="txtUser">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -54,12 +54,12 @@
                         <Insets left="150.0" top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <PasswordField fx:id="textPassword">
+                  <PasswordField fx:id="txtPassword">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </PasswordField>
-                  <Button fx:id="botonLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" style="-fx-background-color: #80000;" text="Ingresar">
+                  <Button fx:id="botonLogin" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eventAction" style="-fx-background-color: ;" text="Ingresar">
                      <VBox.margin>
                         <Insets top="30.0" />
                      </VBox.margin>

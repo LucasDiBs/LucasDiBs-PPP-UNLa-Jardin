@@ -20,13 +20,29 @@ public class AdminService {
 
 
         String passwordEncriptada = passwordEncoder.encode(admin.getPassword());
-        String userEncriptado = passwordEncoder.encode(admin.getUserName());
+               admin.setPassword(passwordEncriptada);
 
-        admin.setPassword(passwordEncriptada);
-
-        admin.setUserName(userEncriptado);
         repository.save(admin);
     }
 
+    public Admin autenticar(String username, String passwordPlana) {
+        Admin admin = repository.findByUserName(username);
+
+        if (admin.getUserName().isEmpty()) {
+            System.out.println("-> ¡El usuario '" + username + "' NO existe en la base de datos!");
+            return null;
+        }
+
+        System.out.println("-> ¡Usuario encontrado! Contraseña en BD: " + admin.getPassword());
+        if (admin != null) {
+            // passwordEncoder.matches(ingresadaEnTextoPlano, encriptadaEnBaseDeDatos)
+            if (passwordEncoder.matches(passwordPlana, admin.getPassword())) {
+                System.out.println("-> ¡Contraseña correcta!");
+                return admin; // Login exitoso
+            }
+            System.out.println("-> ¡Contraseña incorrecta!");
+        }
+        return null; // Credenciales inválidas
+    }
 
 }

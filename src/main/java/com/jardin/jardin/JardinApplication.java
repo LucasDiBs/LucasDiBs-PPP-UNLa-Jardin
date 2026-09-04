@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -11,9 +12,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@Getter
 public class JardinApplication extends Application {
 
-    private ConfigurableApplicationContext springContext;
+    private static ConfigurableApplicationContext springContext;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,7 +28,7 @@ public class JardinApplication extends Application {
         springContext = SpringApplication.run(JardinApplication.class);
 
         // 1. Corregimos la ruta apuntando a la carpeta Views y al archivo del CRUD
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewAdmin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewLogin.fxml"));
 
         // Le indicamos a JavaFX que los Controllers los cree Spring
         fxmlLoader.setControllerFactory(springContext::getBean);
@@ -46,5 +48,9 @@ public class JardinApplication extends Application {
         if (springContext != null) {
             springContext.close();
         }
+    }
+
+    public static ConfigurableApplicationContext getSpringContext() {
+        return springContext;
     }
 }
