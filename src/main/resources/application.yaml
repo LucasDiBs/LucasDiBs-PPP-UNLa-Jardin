@@ -3,11 +3,11 @@ spring:
     name: jardin
 
   datasource:
-    url: jdbc:mysql://localhost:3306/jardin_unla
+    url: jdbc:mysql://localhost:3306/jardin_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
-    password: root12345678
+    password: 2117
     driver-class-name: com.mysql.cj.jdbc.Driver
-    
+
   jpa:
     database: mysql
     hibernate:
