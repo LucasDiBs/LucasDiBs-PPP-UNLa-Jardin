@@ -1,9 +1,12 @@
 package com.jardin.jardin.service;
 import com.jardin.jardin.models.Admin;
+import com.jardin.jardin.models.Infante;
 import com.jardin.jardin.repository.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -23,6 +26,17 @@ public class AdminService {
                admin.setPassword(passwordEncriptada);
 
         repository.save(admin);
+    }
+    public Admin guardar(Admin admin) {
+        return repository.save(admin);
+    }
+
+    public List<Admin> listarTodosAdmin() {
+        return repository.findAll();
+    }
+
+    public Admin buscarPorId(Integer id) {
+        return repository.findById(id).orElse(null);
     }
 
     public Admin autenticar(String username, String passwordPlana) {

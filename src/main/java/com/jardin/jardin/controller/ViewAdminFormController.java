@@ -2,19 +2,13 @@ package com.jardin.jardin.controller;
 
 import com.jardin.jardin.models.Admin;
 import com.jardin.jardin.service.AdminService;
-import com.jardin.jardin.models.Infante;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Controller
 
@@ -31,14 +25,13 @@ public class ViewAdminFormController {
     @FXML private TextField txtDni;
     @FXML private TextField txtTelefono;
     @FXML private TextField txtDireccion;
-    @FXML private DatePicker dpFechaNacimiento;
     @FXML private TextField txtUsuario;
     @FXML private TextField txtPassword;
 
-    private ViewAdminFormController padreController;
+    private ViewAdminListaController padreController;
     private Admin adminActual;
 
-    public void setPadreController(ViewAdminFormController padreController) {
+    public void setPadreController(ViewAdminListaController padreController) {
         this.padreController = padreController;
     }
 
@@ -50,8 +43,7 @@ public class ViewAdminFormController {
         txtTelefono.setText(user.getTelefono());
         txtDireccion.setText(user.getDireccion());
         txtUsuario.setText(user.getUserName());
-        txtPassword.setText(user.getPassword());
-    }
+        }
 
     @FXML
     public void guardar(ActionEvent event) {

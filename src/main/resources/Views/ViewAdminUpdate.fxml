@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewAdminFormController">
+    <children>
+        <!-- 1. Barra de navegación arriba (dentro del único children) -->
+
+        <!-- 2. Título del formulario -->
+        <Label alignment="CENTER" text="Actualizar administrador">
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <font>
+                <Font size="39.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" top="25.0" />
+            </VBox.margin>
+        </Label>
+
+        <!-- 3. Campo DNI -->
+        <Label text="DNI">
+            <VBox.margin>
+                <Insets left="250.0" top="15.0" />
+            </VBox.margin>
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+        </Label>
+        <TextField fx:id="txtDni" maxWidth="600.0" minHeight="0.0" minWidth="1.0" prefHeight="25.0" prefWidth="686.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 4. Campo Nombre -->
+        <Label text="Nombre">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtNombre" maxWidth="600.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 5. Campo Apellido -->
+        <Label text="Apellido">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtApellido" maxWidth="600.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 6. Campo Teléfono -->
+        <Label text="Teléfono">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtTelefono" maxWidth="600.0" minHeight="0.0" minWidth="1.0" prefHeight="25.0" prefWidth="686.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 7. Campo Dirección -->
+        <Label text="Direccion">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtDireccion" maxWidth="600.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 8. Campo Usuario -->
+        <Label text="Usuario">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtUsuario" maxWidth="600.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 9. Campo Contraseña -->
+        <Label text="Contraseña">
+            <font>
+                <Font name="System Bold" size="20.0" />
+            </font>
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </Label>
+        <TextField fx:id="txtPassword" maxHeight="25.0" maxWidth="602.0" prefHeight="25.0" prefWidth="602.0">
+            <VBox.margin>
+                <Insets left="250.0" />
+            </VBox.margin>
+        </TextField>
+
+        <!-- 10. Botón Guardar -->
+        <Button mnemonicParsing="false" onAction="#guardar" prefHeight="52.0" prefWidth="347.0" style="-fx-background-color: #4CAF50; -fx-text-fill: White;" text="Registrar Administrador">
+            <VBox.margin>
+                <Insets left="400.0" top="15.0" />
+            </VBox.margin>
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Button>
+    </children>
+</VBox>

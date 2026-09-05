@@ -1,62 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="675.0" prefWidth="1140.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.ViewAdminFormController">
    <children>
-      <HBox maxHeight="250.0" maxWidth="1143.0" prefHeight="90.0" prefWidth="1143.0" style="-fx-background-color: #500000;">
-         <children>
-            <ImageView fitHeight="90.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../assets/descarga.jpg" />
-               </image>
-            </ImageView>
-            <Label text="Jardin Maternal Azucena Villaflor" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="40.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="10.0" top="15.0" />
-               </HBox.margin>
-            </Label>
-            <Button mnemonicParsing="false" prefHeight="89.0" prefWidth="119.0" style="-fx-background-color: #500000;" text="Infantes" textFill="WHITE">
-               <HBox.margin>
-                  <Insets left="35.0" />
-               </HBox.margin>
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="86.0" prefWidth="100.0" style="-fx-background-color: #500000;" text="Admins" textFill="WHITE">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-            <Button mnemonicParsing="false" prefHeight="87.0" prefWidth="153.0" style="-fx-background-color: #500000;" text="Nuevo Admin" textFill="WHITE">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-               <font>
-                  <Font size="20.0" />
-               </font>
-            </Button>
-         </children>
-         <VBox.margin>
-            <Insets />
-         </VBox.margin>
-      </HBox>
-      <Label alignment="CENTER" text="Resgitro de administradores">
+      <!-- 1. Barra de navegación arriba (dentro del único children) -->
+      <fx:include source="ViewNavBar.fxml" />
+
+      <!-- 2. Título del formulario -->
+      <Label alignment="CENTER" text="Registro de administradores">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -67,9 +23,11 @@
             <Insets left="250.0" top="25.0" />
          </VBox.margin>
       </Label>
+
+      <!-- 3. Campo DNI -->
       <Label text="DNI">
          <VBox.margin>
-            <Insets left="250.0" top="25.0" />
+            <Insets left="250.0" top="15.0" />
          </VBox.margin>
          <font>
             <Font name="System Bold" size="20.0" />
@@ -80,6 +38,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 4. Campo Nombre -->
       <Label text="Nombre">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -93,6 +53,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 5. Campo Apellido -->
       <Label text="Apellido">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -106,6 +68,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 6. Campo Teléfono -->
       <Label text="Teléfono">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -119,6 +83,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 7. Campo Dirección -->
       <Label text="Direccion">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -132,6 +98,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 8. Campo Usuario -->
       <Label text="Usuario">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -145,6 +113,8 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 9. Campo Contraseña -->
       <Label text="Contraseña">
          <font>
             <Font name="System Bold" size="20.0" />
@@ -158,9 +128,11 @@
             <Insets left="250.0" />
          </VBox.margin>
       </TextField>
+
+      <!-- 10. Botón Guardar -->
       <Button mnemonicParsing="false" onAction="#guardar" prefHeight="52.0" prefWidth="347.0" style="-fx-background-color: #4CAF50; -fx-text-fill: White;" text="Registrar Administrador">
          <VBox.margin>
-            <Insets left="400.0" top="25.0" />
+            <Insets left="400.0" top="15.0" />
          </VBox.margin>
          <font>
             <Font size="25.0" />
