@@ -113,7 +113,7 @@ public class ViewAdminListaController {
             loader.setControllerFactory(applicationContext::getBean);
             Parent root = loader.load();
 
-            ViewAdminFormController formController = loader.getController();
+            ViewAdminUpdateController formController = loader.getController();
             formController.setPadreController(this);
 
             if (admin != null) {

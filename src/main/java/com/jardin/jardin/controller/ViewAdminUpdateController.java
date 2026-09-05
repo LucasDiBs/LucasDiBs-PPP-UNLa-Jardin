@@ -4,10 +4,7 @@ import com.jardin.jardin.models.Admin;
 import com.jardin.jardin.service.AdminService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 
 @Controller
-
-public class ViewAdminFormController {
+public class ViewAdminUpdateController {
 
     @Autowired
     private AdminService adminService;
@@ -48,7 +44,7 @@ public class ViewAdminFormController {
         txtTelefono.setText(user.getTelefono());
         txtDireccion.setText(user.getDireccion());
         txtUsuario.setText(user.getUserName());
-        }
+    }
 
     @FXML
     public void guardar(ActionEvent event) {
@@ -69,7 +65,7 @@ public class ViewAdminFormController {
 
 
             adminService.guardarAdmin(adminActual);
-
+            cerrarVentana(event);
 
         } catch (Exception e) {
             System.out.println("Error al guardar: Verifica los datos ingresados.");
@@ -82,3 +78,5 @@ public class ViewAdminFormController {
         stage.close();
     }
 }
+
+
