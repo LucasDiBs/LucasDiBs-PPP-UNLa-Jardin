@@ -31,3 +31,18 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Archivos de entorno y propiedades locales
+.env
+application-local.properties
+
+# Archivos de la IDE
+.idea/
+.vscode/
+*.iml
+*.log
+
+# Carpetas de compilación
+target/
+build/
+bin/
