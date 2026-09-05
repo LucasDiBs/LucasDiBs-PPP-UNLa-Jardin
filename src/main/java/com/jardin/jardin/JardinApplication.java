@@ -28,7 +28,7 @@ public class JardinApplication extends Application {
         springContext = SpringApplication.run(JardinApplication.class);
 
         // 1. Corregimos la ruta apuntando a la carpeta Views y al archivo del CRUD
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewLogin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewAdminForm.fxml"));
 
         // Le indicamos a JavaFX que los Controllers los cree Spring
         fxmlLoader.setControllerFactory(springContext::getBean);
