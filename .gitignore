@@ -35,6 +35,8 @@ build/
 # Archivos de entorno y propiedades locales
 .env
 application-local.properties
+src/main/resources/application.yaml
+src/main/resources/application.properties
 
 # Archivos de la IDE
 .idea/
