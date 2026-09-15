@@ -1,6 +1,7 @@
 package com.jardin.jardin.controller;
 
 import com.jardin.jardin.models.CalendarioInfante;
+import com.jardin.jardin.service.AlertaVacunasCron;
 import com.jardin.jardin.service.VacunacionService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -19,6 +20,8 @@ public class ViewNotificacionesController {
 
     @Autowired
     private VacunacionService vacunacionService;
+    @Autowired
+    private AlertaVacunasCron alertaVacunasCron;
 
     @FXML
     private TextField txtBuscarInfante;
@@ -40,11 +43,16 @@ public class ViewNotificacionesController {
     private Button btnMarcarAplicada;
     @FXML
     private Button btnRevertirAplicacion;
+    @FXML
+    private HeaderController headerComponentController;
 
     private ObservableList<CalendarioInfante> listaAlertas = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        if (headerComponentController != null) {
+            headerComponentController.setTituloModulo("Gestión de Notificaciones y Alertas");
+        }
         // Cargar opciones en el Combo
         comboEstado.setItems(FXCollections.observableArrayList(
                 "Pendientes / Vencidas",
@@ -111,8 +119,18 @@ public class ViewNotificacionesController {
 
     @FXML
     private void handleGenerarAlertas() {
-        vacunacionService.generarNotificacionesDiarias();
+        // 1. Corre el proceso que evalúa las vacunas y guarda las alertas en la tabla
+        // 'notificaciones'
+        alertaVacunasCron.buscarVacunasProximas();
+
+        // 2. Refresca la tabla de la vista
         cargarAlertas();
+
+        // 3. Notifica al HeaderController para que re-calcule las notificaciones
+        // "Pendientes de Lectura"
+        if (headerComponentController != null) {
+            headerComponentController.actualizarContadorNotificaciones();
+        }
     }
 
     @FXML
@@ -169,4 +187,5 @@ public class ViewNotificacionesController {
             mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "El registro fue revertido a pendiente correctamente.");
         }
     }
+
 }

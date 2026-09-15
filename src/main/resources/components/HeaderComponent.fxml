@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="60.0" spacing="20.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #E2E8F0; -fx-border-width: 0 0 1 0;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.jardin.jardin.controller.HeaderController">
+   <padding>
+      <Insets left="25.0" right="25.0" />
+   </padding>
+   <children>
+      <!-- Título dinámico según la pantalla activa -->
+      <Label fx:id="lblTituloModulo" text="Módulo Actual" textFill="#1E293B">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      
+      <!-- Espaciador para empujar la campanita a la derecha -->
+      <StackPane HBox.hgrow="ALWAYS" />
+
+      <!-- Contenedor del Botón de Notificaciones con Badge -->
+      <StackPane alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="btnNotificaciones" mnemonicParsing="false" onAction="#mostrarPopupNotificaciones" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-padding: 8;" text="🔔">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Button>
+            
+            <!-- Globo rojo con el número de alertas no leídas -->
+            <Label fx:id="lblBadgeNotificaciones" alignment="CENTER" minHeight="18.0" minWidth="18.0" style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 9; -fx-font-size: 10px; -fx-font-weight: bold;" text="0" visible="false">
+               <padding>
+                  <Insets left="4.0" right="4.0" />
+               </padding>
+            </Label>
+         </children>
+      </StackPane>
+   </children>
+</HBox>

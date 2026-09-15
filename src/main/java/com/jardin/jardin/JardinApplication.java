@@ -26,7 +26,9 @@ public class JardinApplication extends Application {
         springContext = SpringApplication.run(JardinApplication.class);
 
         // 1. Corregimos la ruta apuntando a la carpeta Views y al archivo del CRUD
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewInfantes.fxml"));
+        // FXMLLoader fxmlLoader = new
+        // FXMLLoader(getClass().getResource("/Views/ViewInfantes.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewNotificaciones.fxml"));
 
         // Le indicamos a JavaFX que los Controllers los cree Spring
         fxmlLoader.setControllerFactory(springContext::getBean);
@@ -36,7 +38,8 @@ public class JardinApplication extends Application {
 
         // Mostrar ventana
         stage.setScene(scene);
-        stage.setTitle("Panel de Pruebas - Gestión de Infantes");
+        // stage.setTitle("Panel de Pruebas - Gestión de Infantes");
+        stage.setTitle("Panel de Pruebas - Gestión de Notificaciones y Vacunas");
         stage.show();
     }
 
