@@ -21,28 +21,47 @@ public class AlertaVacunasCron {
     @Autowired
     private NotificacionRepository notificacionRepository;
 
-    // "0 0 9 * * *" significa que se ejecuta todos los días a las 9:00 AM.
-    @Scheduled(cron = "0 0 9 * * *") //Esta linea deberia estar en el proyecto final
-    //@Scheduled(cron = "*/10 * * * * *") //esta linea se ejecuta cada 10 segundos, la hice para probar que realmente se generaba el evento
+    // Ejecuta todos los días a las 9:00 AM (descomentar la línea de 10s para
+    // testing local)
+    @Scheduled(cron = "0 0 9 * * *")
+    // @Scheduled(cron = "*/10 * * * * *")
     public void buscarVacunasProximas() {
-        LocalDate fechaObjetivo = LocalDate.now().plusDays(30);
-
-        List<CalendarioInfante> pendientes = calendarioRepository.findAll().stream()
-                .filter(c -> !c.isAplicada())
-                .filter(c -> c.getFechaEstimada().isEqual(fechaObjetivo))
-                .toList();
+        List<CalendarioInfante> pendientes = calendarioRepository.findByAplicadaFalse();
+        LocalDate hoy = LocalDate.now();
 
         for (CalendarioInfante alerta : pendientes) {
-            Notificacion aviso = new Notificacion();
-            aviso.setMensaje("Atención: El infante " + alerta.getInfante().getNombre() + " " + 
-                             alerta.getInfante().getApellido() + " debe recibir la vacuna " + 
-                             alerta.getVacuna().getNombre() + " el día " + alerta.getFechaEstimada());
-            aviso.setFechaEnvio(LocalDateTime.now());
-            aviso.setEstado("Pendiente de Lectura");
-            
-            notificacionRepository.save(aviso);
-            
-            System.out.println("Alerta automática generada para el infante: " + alerta.getInfante().getNombre());
+            LocalDate fechaEst = alerta.getFechaEstimada();
+            String infanteNombre = alerta.getInfante().getNombre() + " " + alerta.getInfante().getApellido();
+            String vacunaNombre = alerta.getVacuna().getNombre();
+
+            String mensaje = null;
+
+            // 1. Caso VENCIDA
+            // Si pasó a estar vencida, busca si ya existe una alerta de tipo 'VENCIDA' sin
+            // leer
+            if (fechaEst.isBefore(hoy)) {
+                String msjVencida = "ALERTA: Vacuna " + vacunaNombre + " VENCIDA para " + infanteNombre;
+                if (!notificacionRepository.existsByMensajeAndEstado(msjVencida, "Pendiente de Lectura")) {
+                    // Genera la alerta crítica de vencimiento
+                }
+            }
+            // 2. Caso PROXIMO VENCIMIENTO (faltan 30 días o menos)
+            else if (!fechaEst.isAfter(hoy.plusDays(30))) {
+                mensaje = "Atención: El infante " + infanteNombre + " debe recibir la vacuna " + vacunaNombre
+                        + " el día " + fechaEst;
+            }
+
+            // Guardar solo si se generó un mensaje y no existe una notificación activa
+            // idéntica
+            if (mensaje != null && !notificacionRepository.existsByMensajeAndEstado(mensaje, "Pendiente de Lectura")) {
+                Notificacion aviso = new Notificacion();
+                aviso.setMensaje(mensaje);
+                aviso.setFechaEnvio(LocalDateTime.now());
+                aviso.setEstado("Pendiente de Lectura");
+
+                notificacionRepository.save(aviso);
+                System.out.println("Alerta automática generada: " + mensaje);
+            }
         }
     }
 }
