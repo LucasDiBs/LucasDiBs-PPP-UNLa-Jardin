@@ -104,8 +104,5 @@ public class ViewAdminFormController {
             e.printStackTrace();
         }
     }
-    private void cerrarVentana(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-    }
+
 }

@@ -95,7 +95,6 @@ public class ViewAdminUpdateController {
                 padreController.cargarTabla();
             }
 
-            cerrarVentana(event);
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -109,10 +108,6 @@ public class ViewAdminUpdateController {
         }
     }
 
-    private void cerrarVentana(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.close();
-    }
 }
 
 
