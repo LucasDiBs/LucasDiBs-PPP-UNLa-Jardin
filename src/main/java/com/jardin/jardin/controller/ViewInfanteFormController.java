@@ -1,5 +1,6 @@
 package com.jardin.jardin.controller;
 
+import com.jardin.jardin.models.Admin;
 import com.jardin.jardin.service.VacunacionService;
 import com.jardin.jardin.models.Infante;
 import com.jardin.jardin.service.InfanteService;
@@ -30,6 +31,7 @@ public class ViewInfanteFormController {
     @FXML private TextField txtApellido;
     @FXML private TextField txtDni;
     @FXML private TextField txtDireccion;
+    @FXML private TextField txtTelefono;
     @FXML private DatePicker dpFechaNacimiento;
     @FXML private TextField txtEdadMeses;
     @FXML private TextField txtSala;
@@ -63,6 +65,7 @@ public class ViewInfanteFormController {
         txtApellido.setText(infante.getApellido());
         txtDni.setText(String.valueOf(infante.getDni()));
         txtDireccion.setText(infante.getDireccion());
+        txtTelefono.setText(infante.getTelefono());
         dpFechaNacimiento.setValue(infante.getFechaNacimiento());
         txtSala.setText(infante.getSala());
     }
@@ -81,6 +84,7 @@ public class ViewInfanteFormController {
             infanteActual.setApellido(txtApellido.getText());
             infanteActual.setDni(Integer.parseInt(txtDni.getText()));
             infanteActual.setDireccion(txtDireccion.getText());
+            infanteActual.setTelefono(txtTelefono.getText());
             infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
             infanteActual.setEdadEnMeses(Integer.parseInt(txtEdadMeses.getText()));
             infanteActual.setSala(txtSala.getText());

@@ -26,10 +26,13 @@ public abstract class Persona {
 
     private String direccion;
 
-    public Persona(String direccion, String apellido, String nombre, int dni) {
+    private String telefono;
+
+    public Persona(String direccion, String apellido, String nombre, int dni, String telefono) {
         this.direccion = direccion;
         this.apellido = apellido;
         this.nombre = nombre;
         this.dni = dni;
+        this.telefono = telefono;
     }
 }

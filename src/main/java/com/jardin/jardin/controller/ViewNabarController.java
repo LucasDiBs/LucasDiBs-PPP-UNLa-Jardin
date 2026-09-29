@@ -2,10 +2,12 @@ package com.jardin.jardin.controller;
 
 import com.jardin.jardin.models.Notificacion;
 import com.jardin.jardin.repository.NotificacionRepository;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,60 +19,82 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@Component
-public class HeaderController {
+@Controller
+@Scope("prototype")
+public class ViewNabarController {
 
-    @FXML
-    private Label lblTituloModulo;
-    @FXML
-    private Button btnNotificaciones;
-    @FXML
-    private Label lblBadgeNotificaciones;
+    @Autowired
+    private ApplicationContext applicationContext;
 
     @Autowired
     private NotificacionRepository notificacionRepository;
 
-    @Autowired
-    private ApplicationContext springContext;
+    @FXML
+    private Button btnNotificaciones;
+
+    @FXML
+    private Label lblBadgeNotificaciones;
 
     private Popup popup;
 
     @FXML
     public void initialize() {
-        actualizarContadorNotificaciones();
+        actualizarBadgeNotificaciones();
     }
 
-    public void setTituloModulo(String titulo) {
-        lblTituloModulo.setText(titulo);
+    @FXML
+    void irAInfantes(ActionEvent event) {
+        cambiarVista(event, "/Views/ViewInfantes.fxml", "Gestión de Infantes");
     }
 
-    public void actualizarContadorNotificaciones() {
+    @FXML
+    void irAAdmins(ActionEvent event) {
+        cambiarVista(event, "/Views/ViewListaAdmins.fxml", "Gestión de Administradores");
+    }
+
+    @FXML
+    void irANuevoAdmin(ActionEvent event) {
+        cambiarVista(event, "/Views/ViewAdminForm.fxml", "Nuevo Administrador");
+    }
+
+    @FXML
+    void irANotificaciones(ActionEvent event) {
+        cambiarVista(event, "/Views/ViewGestionVacunas.fxml", "Centro de Notificaciones y Recordatorios");
+    }
+
+    /**
+     * Consulta las notificaciones no leídas y actualiza el contador sobre la
+     * campanita.
+     */
+    public void actualizarBadgeNotificaciones() {
         List<Notificacion> noLeidas = notificacionRepository.findByEstadoOrderByFechaEnvioDesc("Pendiente de Lectura");
-        int cantidad = noLeidas.size();
+        int cantidadAlertas = noLeidas.size();
 
-        if (cantidad > 0) {
-            lblBadgeNotificaciones.setText(String.valueOf(cantidad));
+        if (cantidadAlertas > 0) {
+            lblBadgeNotificaciones.setText(String.valueOf(cantidadAlertas));
             lblBadgeNotificaciones.setVisible(true);
         } else {
             lblBadgeNotificaciones.setVisible(false);
         }
     }
 
+    /**
+     * Despliega el menú flotante desplegable al hacer clic sobre la campanita.
+     */
     @FXML
     private void mostrarPopupNotificaciones() {
-        // Si el popup existe y está abierto, lo cerramos y destruimos la referencia
         if (popup != null && popup.isShowing()) {
             popup.hide();
             popup = null;
             return;
         }
 
-        // Creamos una nueva instancia limpia de Popup para evitar bloqueos
         popup = new Popup();
         popup.setAutoHide(true);
 
@@ -134,7 +158,7 @@ public class HeaderController {
                         btnMarcarIndividual.setOnAction(e -> {
                             item.setEstado("LEIDA");
                             notificacionRepository.save(item);
-                            actualizarContadorNotificaciones();
+                            actualizarBadgeNotificaciones();
                             ocultarPopup();
                             mostrarPopupNotificaciones();
                         });
@@ -151,11 +175,9 @@ public class HeaderController {
             contenedor.getChildren().add(listView);
         }
 
-        // --- Barra de Acciones Inferior ---
         HBox barraAcciones = new HBox(8);
         barraAcciones.setAlignment(Pos.CENTER);
 
-        // Botón: Ver Historial
         Button btnHistorial = new Button("📋 Historial");
         btnHistorial.setMaxWidth(Double.MAX_VALUE);
         btnHistorial.setStyle(
@@ -166,7 +188,6 @@ public class HeaderController {
             abrirHistorialNotificaciones();
         });
 
-        // Botón: Marcar todas como leídas
         Button btnMarcarLeidas = new Button("✔ Marcar todas leídas");
         btnMarcarLeidas.setMaxWidth(Double.MAX_VALUE);
         btnMarcarLeidas.setStyle(
@@ -177,7 +198,7 @@ public class HeaderController {
                 n.setEstado("LEIDA");
             }
             notificacionRepository.saveAll(listaNotificaciones);
-            actualizarContadorNotificaciones();
+            actualizarBadgeNotificaciones();
             ocultarPopup();
         });
 
@@ -186,10 +207,7 @@ public class HeaderController {
 
         popup.getContent().add(contenedor);
 
-        // Obtener ventana actual
         Window ownerWindow = btnNotificaciones.getScene().getWindow();
-
-        // Calcular posición en pantalla
         double x = btnNotificaciones.localToScreen(btnNotificaciones.getBoundsInLocal()).getMinX() - 320;
         double y = btnNotificaciones.localToScreen(btnNotificaciones.getBoundsInLocal()).getMaxY() + 5;
 
@@ -205,8 +223,8 @@ public class HeaderController {
 
     private void abrirDetalleNotificacion(Notificacion notificacion) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewDetalleNotificacion.fxml"));
-            loader.setControllerFactory(springContext::getBean);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ViewDetalleNotificacion.fxml"));
+            loader.setControllerFactory(applicationContext::getBean);
             Parent root = loader.load();
 
             ViewDetalleNotificacionController controller = loader.getController();
@@ -223,19 +241,46 @@ public class HeaderController {
 
     private void abrirHistorialNotificaciones() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewHistorialNotificaciones.fxml"));
-            loader.setControllerFactory(springContext::getBean);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/ViewHistorialNotificaciones.fxml"));
+            loader.setControllerFactory(applicationContext::getBean);
             Parent root = loader.load();
 
             Stage stage = new Stage();
             stage.setTitle("Historial de Notificaciones");
             stage.setScene(new Scene(root));
-
-            // Al cerrar la ventana modal del historial, refrescamos el contador del header
-            stage.setOnHiding(e -> actualizarContadorNotificaciones());
+            stage.setOnHiding(e -> actualizarBadgeNotificaciones());
 
             stage.show();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cambiarVista(ActionEvent event, String fxmlRuta, String titulo) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlRuta));
+            loader.setControllerFactory(applicationContext::getBean);
+            Parent root = loader.load();
+
+            // Obtener el Stage actual desde el evento
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            // Obtener la escena existente en lugar de instanciar una nueva
+            Scene currentScene = stage.getScene();
+
+            if (currentScene != null) {
+                // Reemplazamos únicamente el contenido de la ventana
+                currentScene.setRoot(root);
+            } else {
+                // Respaldamos la creación inicial si por alguna razón la escena fuera nula
+                stage.setScene(new Scene(root));
+            }
+
+            stage.setTitle(titulo);
+            stage.show();
+
+        } catch (Exception e) {
+            System.out.println("¡Error al cambiar de vista desde el Navbar!");
             e.printStackTrace();
         }
     }

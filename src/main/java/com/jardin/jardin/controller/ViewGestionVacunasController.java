@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ViewNotificacionesController {
+public class ViewGestionVacunasController {
 
     @Autowired
     private VacunacionService vacunacionService;
@@ -43,60 +43,72 @@ public class ViewNotificacionesController {
     private Button btnMarcarAplicada;
     @FXML
     private Button btnRevertirAplicacion;
+
+    // Se reemplaza el viejo HeaderController por ViewNabarController
+    // Debe coincidir con el fx:id="viewNabar" del include en el FXML
     @FXML
-    private HeaderController headerComponentController;
+    private ViewNabarController viewNabarController;
 
     private ObservableList<CalendarioInfante> listaAlertas = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        if (headerComponentController != null) {
-            headerComponentController.setTituloModulo("Gestión de Notificaciones y Alertas");
-        }
         // Cargar opciones en el Combo
-        comboEstado.setItems(FXCollections.observableArrayList(
-                "Pendientes / Vencidas",
-                "Aplicadas (Historial)",
-                "Todas"));
-        comboEstado.getSelectionModel().selectFirst();
+        if (comboEstado != null) {
+            comboEstado.setItems(FXCollections.observableArrayList(
+                    "Pendientes / Vencidas",
+                    "Aplicadas (Historial)",
+                    "Todas"));
+            comboEstado.getSelectionModel().selectFirst();
+        }
 
         // Mapeo de columnas
-        colInfante.setCellValueFactory(cell -> new SimpleStringProperty(
-                cell.getValue().getInfante().getApellido() + ", " + cell.getValue().getInfante().getNombre()));
-        colSala.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getInfante().getSala()));
-        colVacuna.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getVacuna().getNombre()));
-        colFechaEstimada
-                .setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getFechaEstimada().toString()));
-        colEstado.setCellValueFactory(cell -> {
-            boolean aplicada = cell.getValue().isAplicada();
-            LocalDate fechaEst = cell.getValue().getFechaEstimada();
-            if (aplicada)
-                return new SimpleStringProperty("Aplicada");
-            if (fechaEst.isBefore(LocalDate.now()))
-                return new SimpleStringProperty("VENCIDA");
-            return new SimpleStringProperty("Pendiente");
-        });
+        if (colInfante != null) {
+            colInfante.setCellValueFactory(cell -> new SimpleStringProperty(
+                    cell.getValue().getInfante().getApellido() + ", " + cell.getValue().getInfante().getNombre()));
+            colSala.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getInfante().getSala()));
+            colVacuna.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getVacuna().getNombre()));
+            colFechaEstimada.setCellValueFactory(
+                    cell -> new SimpleStringProperty(cell.getValue().getFechaEstimada().toString()));
+            colEstado.setCellValueFactory(cell -> {
+                boolean aplicada = cell.getValue().isAplicada();
+                LocalDate fechaEst = cell.getValue().getFechaEstimada();
+                if (aplicada)
+                    return new SimpleStringProperty("Aplicada");
+                if (fechaEst.isBefore(LocalDate.now()))
+                    return new SimpleStringProperty("VENCIDA");
+                return new SimpleStringProperty("Pendiente");
+            });
+        }
 
         cargarAlertas();
     }
 
     private void cargarAlertas() {
+        if (comboEstado == null)
+            return;
+
         String seleccion = comboEstado.getValue();
         List<CalendarioInfante> datos;
 
         if ("Aplicadas (Historial)".equals(seleccion)) {
             datos = vacunacionService.obtenerVacunasAplicadas();
-            btnMarcarAplicada.setDisable(true);
+            if (btnMarcarAplicada != null)
+                btnMarcarAplicada.setDisable(true);
         } else if ("Todas".equals(seleccion)) {
             datos = vacunacionService.obtenerTodasLasVacunas();
-            btnMarcarAplicada.setDisable(false);
+            if (btnMarcarAplicada != null)
+                btnMarcarAplicada.setDisable(false);
         } else {
             datos = vacunacionService.obtenerVacunasPendientesOVencidas();
-            btnMarcarAplicada.setDisable(false);
+            if (btnMarcarAplicada != null)
+                btnMarcarAplicada.setDisable(false);
         }
 
         listaAlertas.setAll(datos);
-        tablaAlertas.setItems(listaAlertas);
+        if (tablaAlertas != null) {
+            tablaAlertas.setItems(listaAlertas);
+        }
     }
 
     @FXML
@@ -119,17 +131,15 @@ public class ViewNotificacionesController {
 
     @FXML
     private void handleGenerarAlertas() {
-        // 1. Corre el proceso que evalúa las vacunas y guarda las alertas en la tabla
-        // 'notificaciones'
+        // 1. Corre el proceso que evalúa las vacunas y guarda las alertas
         alertaVacunasCron.buscarVacunasProximas();
 
         // 2. Refresca la tabla de la vista
         cargarAlertas();
 
-        // 3. Notifica al HeaderController para que re-calcule las notificaciones
-        // "Pendientes de Lectura"
-        if (headerComponentController != null) {
-            headerComponentController.actualizarContadorNotificaciones();
+        // 3. Notifica al ViewNabarController para recalcular la badge
+        if (viewNabarController != null) {
+            viewNabarController.actualizarBadgeNotificaciones();
         }
     }
 
@@ -151,14 +161,6 @@ public class ViewNotificacionesController {
         mostrarAlerta(Alert.AlertType.INFORMATION, "Éxito", "La vacuna se registró como aplicada.");
     }
 
-    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String msj) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(msj);
-        alert.showAndWait();
-    }
-
     @FXML
     private void handleRevertirAplicacion() {
         CalendarioInfante seleccion = tablaAlertas.getSelectionModel().getSelectedItem();
@@ -172,7 +174,6 @@ public class ViewNotificacionesController {
             return;
         }
 
-        // Cartel de confirmación
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
         confirmacion.setTitle("Confirmar Reversión");
         confirmacion.setHeaderText("¿Estás seguro de que deseas revertir el estado?");
@@ -188,4 +189,11 @@ public class ViewNotificacionesController {
         }
     }
 
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String msj) {
+        Alert alert = new Alert(tipo);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(msj);
+        alert.showAndWait();
+    }
 }

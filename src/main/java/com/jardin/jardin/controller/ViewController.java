@@ -14,10 +14,7 @@ public class ViewController implements Initializable {
 
 
 
-    @Bean
-    String titulo(){
-        return "Hola Mundo";
-    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
