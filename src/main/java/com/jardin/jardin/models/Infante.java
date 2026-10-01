@@ -19,6 +19,12 @@ public class Infante extends Persona {
     @Column(nullable = false)
     private LocalDate fechaNacimiento;
 
+    @Column(nullable = false)
+    private String Papis;
+
+    @Column(nullable = false)
+    private String Email;
+
     private String sala;
 
     private boolean activo = true;

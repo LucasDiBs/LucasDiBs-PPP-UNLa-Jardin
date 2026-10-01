@@ -32,6 +32,8 @@ public class ViewInfanteFormController {
     @FXML private TextField txtDni;
     @FXML private TextField txtDireccion;
     @FXML private TextField txtTelefono;
+    @FXML private TextField txtPapis;
+    @FXML private TextField txtEmail;
     @FXML private DatePicker dpFechaNacimiento;
     @FXML private TextField txtEdadMeses;
     @FXML private TextField txtSala;
@@ -65,6 +67,8 @@ public class ViewInfanteFormController {
         txtApellido.setText(infante.getApellido());
         txtDni.setText(String.valueOf(infante.getDni()));
         txtDireccion.setText(infante.getDireccion());
+        txtPapis.setText(infante.getPapis());
+        txtEmail.setText(infante.getEmail());
         txtTelefono.setText(infante.getTelefono());
         dpFechaNacimiento.setValue(infante.getFechaNacimiento());
         txtSala.setText(infante.getSala());
@@ -85,6 +89,8 @@ public class ViewInfanteFormController {
             infanteActual.setDni(Integer.parseInt(txtDni.getText()));
             infanteActual.setDireccion(txtDireccion.getText());
             infanteActual.setTelefono(txtTelefono.getText());
+            infanteActual.setPapis(txtPapis.getText());
+            infanteActual.setEmail(txtEmail.getText());
             infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
             infanteActual.setEdadEnMeses(Integer.parseInt(txtEdadMeses.getText()));
             infanteActual.setSala(txtSala.getText());
