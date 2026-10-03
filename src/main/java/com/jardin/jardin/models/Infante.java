@@ -28,4 +28,14 @@ public class Infante extends Persona {
     private String sala;
 
     private boolean activo = true;
+
+    public Infante(String direccion, String apellido, String nombre, int dni, String telefono, LocalDate fechaNacimiento, String papis, String email, String sala, boolean activo, int edadEnMeses) {
+        super(direccion, apellido, nombre, dni, telefono);
+        this.fechaNacimiento = fechaNacimiento;
+        Papis = papis;
+        Email = email;
+        this.sala = sala;
+        this.activo = activo;
+        this.edadEnMeses = edadEnMeses;
+    }
 }

@@ -57,6 +57,15 @@ public class ViewAdminFormController {
     @FXML
     public void guardar(ActionEvent event) {
         try {
+            String dniStr = txtDni.getText();
+            if (dniStr == null || !dniStr.matches("\\d{8}")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("El DNI debe contener exactamente 8 números.");
+                alert.showAndWait();
+               // Detiene la ejecución si no es válido
+            }
             boolean esNuevo = (adminActual == null);
 
             if (esNuevo) {
@@ -92,7 +101,7 @@ public class ViewAdminFormController {
             if (padreController != null) {
                 padreController.cargarTabla();
             }
-            
+
 
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

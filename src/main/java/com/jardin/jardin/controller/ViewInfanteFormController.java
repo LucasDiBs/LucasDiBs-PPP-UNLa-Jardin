@@ -7,6 +7,7 @@ import com.jardin.jardin.service.InfanteService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -77,13 +78,34 @@ public class ViewInfanteFormController {
     @FXML
     public void guardar(ActionEvent event) {
         try {
+            String dniStr = txtDni.getText();
+            if (dniStr == null || !dniStr.matches("\\d{8}")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("El DNI debe contener exactamente 8 números.");
+                alert.showAndWait();
+                // Detiene la ejecución si no es válido
+            }
+
+            // 2. Validar Email con dominio válido
+            String emailStr = txtEmail.getText();
+            // Regex estándar para correos con formato texto@dominio.extensión (ej: 2 a más letras en la extensión)
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+            if (emailStr == null || !emailStr.matches(emailRegex)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("Email debe tener un dominio valido");
+                alert.showAndWait();
+            }
             boolean esNuevo = (infanteActual == null);
-            
+
             if (esNuevo) {
                 infanteActual = new Infante();
                 infanteActual.setActivo(true);
             }
-            
+
             infanteActual.setNombre(txtNombre.getText());
             infanteActual.setApellido(txtApellido.getText());
             infanteActual.setDni(Integer.parseInt(txtDni.getText()));
