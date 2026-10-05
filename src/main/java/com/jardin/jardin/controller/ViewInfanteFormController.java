@@ -1,6 +1,7 @@
 package com.jardin.jardin.controller;
 
 import com.jardin.jardin.models.Admin;
+import com.jardin.jardin.service.EmailService;
 import com.jardin.jardin.service.VacunacionService;
 import com.jardin.jardin.models.Infante;
 import com.jardin.jardin.service.InfanteService;
@@ -27,6 +28,9 @@ public class ViewInfanteFormController {
 
     @Autowired
     private VacunacionService vacunacionService;
+
+    @Autowired
+    private EmailService emailService;
 
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
@@ -119,6 +123,7 @@ public class ViewInfanteFormController {
 
             infanteService.guardar(infanteActual);
 
+            informeAlta(infanteActual);
             if (esNuevo) {
                 vacunacionService.generarCalendarioParaInfante(infanteActual);
             }
@@ -141,5 +146,24 @@ public class ViewInfanteFormController {
     private void cerrarVentana(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+    private void informeAlta(Infante infante){
+
+
+
+
+
+        emailService.enviar(
+                infanteActual.getEmail(),
+                "Cambio de estado del infante",
+                "Hola,\n\n"
+                        + "El estado del infante "
+                        + infante.getNombre()
+                        + " "
+                        + infante.getApellido()
+                        + " fue dado de alta en el jardin Azucena Villaflor "
+                        + ".\n\n"
+                        + "Saludos."
+        );
     }
 }
