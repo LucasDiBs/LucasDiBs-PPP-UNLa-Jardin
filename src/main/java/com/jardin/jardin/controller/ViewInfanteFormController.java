@@ -149,10 +149,6 @@ public class ViewInfanteFormController {
     }
     private void informeAlta(Infante infante){
 
-
-
-
-
         emailService.enviar(
                 infanteActual.getEmail(),
                 "Cambio de estado del infante",
