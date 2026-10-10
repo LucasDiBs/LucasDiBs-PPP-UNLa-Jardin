@@ -120,16 +120,24 @@ public class ViewInfanteFormController {
             infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
             infanteActual.setEdadEnMeses(Integer.parseInt(txtEdadMeses.getText()));
             infanteActual.setSala(txtSala.getText());
-
             infanteService.guardar(infanteActual);
 
-            informeAlta(infanteActual);
+
+
             if (esNuevo) {
                 vacunacionService.generarCalendarioParaInfante(infanteActual);
             }
 
             if (padreController != null) {
                 padreController.cargarTabla();
+            }
+
+
+            if (esNuevo) {
+                informeAlta(infanteActual);
+            }else if(!esNuevo){
+                informeModificacion(infanteActual);
+
             }
             cerrarVentana(event);
         } catch (Exception e) {
@@ -158,6 +166,36 @@ public class ViewInfanteFormController {
                         + " "
                         + infante.getApellido()
                         + " fue dado de alta en el jardin Azucena Villaflor "
+                        + ".\n\n"
+                        + "Saludos."
+        );
+    }
+
+    private void informeModificacion(Infante infante){
+
+        emailService.enviar(
+                infanteActual.getEmail(),
+                "Datos actualizados",
+                "Hola,\n\n"
+                        + "Los datos del infante han sido actualizados "
+                        + infante.getDni()
+                        + " "
+                        + infante.getNombre()
+                        + " "
+                        + infante.getApellido()
+                        + " "
+                        + infante.getFechaNacimiento()
+                        + " "
+                        + infante.getSala()
+                        + " "
+                        + infante.getPapis()
+                        + " "
+                        + infante.getEmail()
+                        + " "
+                        + infante.getTelefono()
+                        + " "
+                        + infante.getDireccion()
+                        + " "
                         + ".\n\n"
                         + "Saludos."
         );
