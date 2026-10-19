@@ -21,9 +21,11 @@ public class AlertaVacunasCron {
     @Autowired
     private NotificacionRepository notificacionRepository;
 
-    // "0 0 9 * * *" significa que se ejecuta todos los días a las 9:00 AM.
-    @Scheduled(cron = "0 0 9 * * *") //Esta linea deberia estar en el proyecto final
-    //@Scheduled(cron = "*/10 * * * * *") //esta linea se ejecuta cada 10 segundos, la hice para probar que realmente se generaba el evento
+    // ACÁ ESTÁ EL SERVICIO DE CORREOS QUE TE FALTABA
+    @Autowired
+    private EmailService emailService;
+
+    @Scheduled(cron = "*/10 * * * * *")
     public void buscarVacunasProximas() {
         LocalDate fechaObjetivo = LocalDate.now().plusDays(30);
 
@@ -39,10 +41,20 @@ public class AlertaVacunasCron {
                              alerta.getVacuna().getNombre() + " el día " + alerta.getFechaEstimada());
             aviso.setFechaEnvio(LocalDateTime.now());
             aviso.setEstado("Pendiente de Lectura");
-            
             notificacionRepository.save(aviso);
             
-            System.out.println("Alerta automática generada para el infante: " + alerta.getInfante().getNombre());
+            System.out.println("Alerta generada en BD para: " + alerta.getInfante().getNombre());
+
+            // ACÁ SE DISPARA EL EMAIL REAL
+            String emailPadre = alerta.getInfante().getEmailContacto();
+            if (emailPadre != null && !emailPadre.trim().isEmpty()) {
+                emailService.enviarRecordatorioVacuna(
+                        emailPadre, 
+                        alerta.getInfante().getNombre() + " " + alerta.getInfante().getApellido(), 
+                        alerta.getVacuna().getNombre(), 
+                        alerta.getFechaEstimada().toString()
+                );
+            }
         }
     }
 }

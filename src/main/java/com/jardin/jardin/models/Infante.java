@@ -21,5 +21,8 @@ public class Infante extends Persona {
 
     private String sala;
 
+    @Column(name = "email_contacto")
+    private String emailContacto;
+
     private boolean activo = true;
 }

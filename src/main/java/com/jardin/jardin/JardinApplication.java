@@ -27,6 +27,7 @@ public class JardinApplication extends Application {
         // Iniciar Spring Boot
         springContext = SpringApplication.run(JardinApplication.class);
 
+
         // 1. Corregimos la ruta apuntando a la carpeta Views y al archivo del CRUD
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Views/ViewAdminForm.fxml"));
 
@@ -41,6 +42,7 @@ public class JardinApplication extends Application {
         stage.setTitle("Panel de Pruebas - Gestión de Infantes");
         stage.show();
     }
+
 
     @Override
     public void stop() {

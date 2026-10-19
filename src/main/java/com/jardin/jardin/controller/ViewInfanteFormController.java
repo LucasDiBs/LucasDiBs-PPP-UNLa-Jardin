@@ -1,6 +1,5 @@
 package com.jardin.jardin.controller;
 
-import com.jardin.jardin.models.Admin;
 import com.jardin.jardin.service.VacunacionService;
 import com.jardin.jardin.models.Infante;
 import com.jardin.jardin.service.InfanteService;
@@ -31,10 +30,14 @@ public class ViewInfanteFormController {
     @FXML private TextField txtApellido;
     @FXML private TextField txtDni;
     @FXML private TextField txtDireccion;
+    
+    // ACÁ AGREGAMOS EL TELÉFONO QUE FALTABA
     @FXML private TextField txtTelefono;
+    
     @FXML private DatePicker dpFechaNacimiento;
     @FXML private TextField txtEdadMeses;
     @FXML private TextField txtSala;
+    @FXML private TextField txtEmailContacto;
 
     private ViewInfantesController padreController;
     private Infante infanteActual; 
@@ -65,9 +68,18 @@ public class ViewInfanteFormController {
         txtApellido.setText(infante.getApellido());
         txtDni.setText(String.valueOf(infante.getDni()));
         txtDireccion.setText(infante.getDireccion());
-        txtTelefono.setText(infante.getTelefono());
+        
+        // Cargar el teléfono si existe
+        if(infante.getTelefono() != null) {
+            txtTelefono.setText(infante.getTelefono());
+        }
+        
         dpFechaNacimiento.setValue(infante.getFechaNacimiento());
         txtSala.setText(infante.getSala());
+        
+        if(infante.getEmailContacto() != null) {
+            txtEmailContacto.setText(infante.getEmailContacto());
+        }
     }
 
     @FXML
@@ -84,10 +96,14 @@ public class ViewInfanteFormController {
             infanteActual.setApellido(txtApellido.getText());
             infanteActual.setDni(Integer.parseInt(txtDni.getText()));
             infanteActual.setDireccion(txtDireccion.getText());
+            
+            // LE DECIMOS QUE GUARDE EL TELÉFONO
             infanteActual.setTelefono(txtTelefono.getText());
+            
             infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
             infanteActual.setEdadEnMeses(Integer.parseInt(txtEdadMeses.getText()));
             infanteActual.setSala(txtSala.getText());
+            infanteActual.setEmailContacto(txtEmailContacto.getText());
 
             infanteService.guardar(infanteActual);
 
