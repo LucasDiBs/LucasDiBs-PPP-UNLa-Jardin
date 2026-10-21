@@ -1,13 +1,14 @@
 spring:
   application:
-    name: jardin
+    name: jardin_unla
   
   datasource:
-    url: jdbc:mysql://localhost:3306/jardin_unla
-    username: root
-    password: root12345678
+    url: jdbc:mysql://localhost:3306/jardin_unla?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+
+    username: ${User:root}
+    password: ${Password:root12345678}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  
+
   jpa:
     database: mysql
     hibernate:
@@ -21,8 +22,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${MAIL_USERNAME:tu_correo@gmail.com}
-    password: ${MAIL_PASSWORD:contraseña_de_prueba}
+    username: jardin.unla.notificaciones@gmail.com
+    password: "clavedeaplicacion"
     properties:
       mail:
         smtp:

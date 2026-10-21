@@ -21,39 +21,64 @@ public class AlertaVacunasCron {
     @Autowired
     private NotificacionRepository notificacionRepository;
 
-    // ACÁ ESTÁ EL SERVICIO DE CORREOS QUE TE FALTABA
     @Autowired
     private EmailService emailService;
 
+    //Descomentar la linea de abajo para probar localmente si se envia mail
     @Scheduled(cron = "*/10 * * * * *")
+    // Ejecuta todos los días a las 9:00 AM
+    //@Scheduled(cron = "0 0 9 * * *")
     public void buscarVacunasProximas() {
-        LocalDate fechaObjetivo = LocalDate.now().plusDays(30);
-
-        List<CalendarioInfante> pendientes = calendarioRepository.findAll().stream()
-                .filter(c -> !c.isAplicada())
-                .filter(c -> c.getFechaEstimada().isEqual(fechaObjetivo))
-                .toList();
+        List<CalendarioInfante> pendientes = calendarioRepository.findByAplicadaFalse();
+        LocalDate hoy = LocalDate.now();
 
         for (CalendarioInfante alerta : pendientes) {
-            Notificacion aviso = new Notificacion();
-            aviso.setMensaje("Atención: El infante " + alerta.getInfante().getNombre() + " " + 
-                             alerta.getInfante().getApellido() + " debe recibir la vacuna " + 
-                             alerta.getVacuna().getNombre() + " el día " + alerta.getFechaEstimada());
-            aviso.setFechaEnvio(LocalDateTime.now());
-            aviso.setEstado("Pendiente de Lectura");
-            notificacionRepository.save(aviso);
+            LocalDate fechaEst = alerta.getFechaEstimada();
+            String infanteNombre = alerta.getInfante().getNombre() + " " + alerta.getInfante().getApellido();
+            String vacunaNombre = alerta.getVacuna().getNombre();
             
-            System.out.println("Alerta generada en BD para: " + alerta.getInfante().getNombre());
+            String mensaje = null;
+            boolean esVencida = false;
 
-            // ACÁ SE DISPARA EL EMAIL REAL
-            String emailPadre = alerta.getInfante().getEmailContacto();
-            if (emailPadre != null && !emailPadre.trim().isEmpty()) {
-                emailService.enviarRecordatorioVacuna(
-                        emailPadre, 
-                        alerta.getInfante().getNombre() + " " + alerta.getInfante().getApellido(), 
-                        alerta.getVacuna().getNombre(), 
-                        alerta.getFechaEstimada().toString()
-                );
+            // 1. Caso VENCIDA
+            if (fechaEst.isBefore(hoy)) {
+                mensaje = "ALERTA: Vacuna " + vacunaNombre + " VENCIDA para " + infanteNombre;
+                esVencida = true;
+            }
+            // 2. Caso PROXIMO VENCIMIENTO (faltan 30 días o menos)
+            else if (!fechaEst.isAfter(hoy.plusDays(30))) {
+                mensaje = "Atención: El infante " + infanteNombre + " debe recibir la vacuna " + vacunaNombre
+                        + " el día " + fechaEst;
+            }
+
+            // Guardar en BD y enviar email SOLO si la notificación no existe previamente
+            if (mensaje != null && !notificacionRepository.existsByMensajeAndEstado(mensaje, "Pendiente de Lectura")) {
+                Notificacion aviso = new Notificacion();
+                aviso.setMensaje(mensaje);
+                aviso.setFechaEnvio(LocalDateTime.now());
+                aviso.setEstado("Pendiente de Lectura");
+
+                notificacionRepository.save(aviso);
+                System.out.println("Alerta automática generada: " + mensaje);
+
+                // Disparamos el email real
+                String emailPadre = alerta.getInfante().getEmail(); 
+                if (emailPadre != null && !emailPadre.trim().isEmpty()) {
+                    if (esVencida) {
+                        // Usa el método genérico que creó tu compañero para alertas urgentes
+                        emailService.enviar(emailPadre, "URGENTE: Vacuna Vencida - Jardín UNLa", 
+                                "Estimada familia, les informamos que la vacuna " + vacunaNombre + 
+                                " de " + infanteNombre + " se encuentra VENCIDA. Por favor, regularicen la situación.");
+                    } else {
+                        // Usa tu método específico para el recordatorio normal
+                        emailService.enviarRecordatorioVacuna(
+                                emailPadre, 
+                                infanteNombre, 
+                                vacunaNombre, 
+                                fechaEst.toString()
+                        );
+                    }
+                }
             }
         }
     }

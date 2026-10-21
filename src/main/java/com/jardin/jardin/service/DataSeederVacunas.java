@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class DataSeeder implements CommandLineRunner {
+public class DataSeederVacunas implements CommandLineRunner {
 
     @Autowired
     private VacunaRepository vacunaRepository;

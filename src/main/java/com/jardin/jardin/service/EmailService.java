@@ -1,21 +1,54 @@
 package com.jardin.jardin.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    // Método que fuerza la configuración de Gmail ignorando el application.yaml
+    private JavaMailSenderImpl getMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
+        //Estos dos campos deben modificarse con los correctos para poder probar el sistema de avisos por mail
+        mailSender.setUsername("jardin.unla.notificaciones@gmail.com");
+        mailSender.setPassword("clavedeaplicacion"); 
+
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        
+        return mailSender;
+    }
+
+    public void enviar(String destinatario, String asunto, String mensaje) {
+        try {
+            JavaMailSenderImpl mailSender = getMailSender();
+            
+            SimpleMailMessage email = new SimpleMailMessage();
+            email.setTo(destinatario);
+            email.setSubject(asunto);
+            email.setText(mensaje);
+            
+            mailSender.send(email);
+            System.out.println("Correo enviado con éxito a: " + destinatario);
+        } catch (Exception e) {
+            System.out.println("Error al intentar enviar correo a " + destinatario + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     public void enviarRecordatorioVacuna(String destinatario, String nombreInfante, String nombreVacuna, String fecha) {
         try {
+            JavaMailSenderImpl mailSender = getMailSender();
+            
             SimpleMailMessage mensaje = new SimpleMailMessage();
-            // Tiene que coincidir con el correo que pusiste en application.yaml
-            mensaje.setFrom("jardin.unla.notificaciones@gmail.com"); 
+            mensaje.setFrom("ivansofia357@gmail.com");
             mensaje.setTo(destinatario);
             mensaje.setSubject("Aviso de Vacunación - Jardín UNLa");
             mensaje.setText("Estimada familia,\n\n" +
@@ -25,9 +58,9 @@ public class EmailService {
                     "Saludos cordiales,\nAdministración del Jardín.");
 
             mailSender.send(mensaje);
-            System.out.println("Correo enviado con éxito a: " + destinatario);
+            System.out.println("Correo de vacuna enviado con éxito a: " + destinatario);
         } catch (Exception e) {
-            System.out.println("Error al intentar enviar el correo a " + destinatario + ": " + e.getMessage());
+            System.out.println("Error al intentar enviar el correo de vacuna a " + destinatario + ": " + e.getMessage());
         }
     }
 }

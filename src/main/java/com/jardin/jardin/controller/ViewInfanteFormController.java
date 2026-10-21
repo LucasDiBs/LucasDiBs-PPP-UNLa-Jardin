@@ -1,11 +1,14 @@
 package com.jardin.jardin.controller;
 
+import com.jardin.jardin.models.Admin;
+import com.jardin.jardin.service.EmailService;
 import com.jardin.jardin.service.VacunacionService;
 import com.jardin.jardin.models.Infante;
 import com.jardin.jardin.service.InfanteService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -26,18 +29,19 @@ public class ViewInfanteFormController {
     @Autowired
     private VacunacionService vacunacionService;
 
+    @Autowired
+    private EmailService emailService;
+
     @FXML private TextField txtNombre;
     @FXML private TextField txtApellido;
     @FXML private TextField txtDni;
     @FXML private TextField txtDireccion;
-    
-    // ACÁ AGREGAMOS EL TELÉFONO QUE FALTABA
     @FXML private TextField txtTelefono;
-    
+    @FXML private TextField txtPapis;
+    @FXML private TextField txtEmail;
     @FXML private DatePicker dpFechaNacimiento;
     @FXML private TextField txtEdadMeses;
     @FXML private TextField txtSala;
-    @FXML private TextField txtEmailContacto;
 
     private ViewInfantesController padreController;
     private Infante infanteActual; 
@@ -69,55 +73,97 @@ public class ViewInfanteFormController {
         txtDni.setText(String.valueOf(infante.getDni()));
         txtDireccion.setText(infante.getDireccion());
         
-        // Cargar el teléfono si existe
-        if(infante.getTelefono() != null) {
-            txtTelefono.setText(infante.getTelefono());
-        }
+        if (infante.getTelefono() != null) txtTelefono.setText(infante.getTelefono());
+        if (infante.getPapis() != null && txtPapis != null) txtPapis.setText(infante.getPapis());
+        if (infante.getEmail() != null && txtEmail != null) txtEmail.setText(infante.getEmail());
         
         dpFechaNacimiento.setValue(infante.getFechaNacimiento());
         txtSala.setText(infante.getSala());
-        
-        if(infante.getEmailContacto() != null) {
-            txtEmailContacto.setText(infante.getEmailContacto());
-        }
     }
 
-    @FXML
+   @FXML
     public void guardar(ActionEvent event) {
         try {
-            boolean esNuevo = (infanteActual == null);
+            String dniStr = txtDni.getText();
+            if (dniStr == null || !dniStr.matches("\\d{8}")) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("El DNI debe contener exactamente 8 números.");
+                alert.showAndWait();
+                return; 
+            }
+
+            String emailStr = (txtEmail != null && !txtEmail.getText().isEmpty()) ? txtEmail.getText() : "";
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
             
+            if (!emailStr.isEmpty() && !emailStr.matches(emailRegex)) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("Email debe tener un dominio válido.");
+                alert.showAndWait();
+                return; 
+            }
+
+            // Validar que se haya elegido una fecha para evitar errores de null
+            if (dpFechaNacimiento.getValue() == null) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Advertencia");
+                alert.setHeaderText(null);
+                alert.setContentText("Por favor, seleccione una fecha de nacimiento.");
+                alert.showAndWait();
+                return; 
+            }
+
+            boolean esNuevo = (infanteActual == null);
+
             if (esNuevo) {
                 infanteActual = new Infante();
                 infanteActual.setActivo(true);
             }
-            
+
             infanteActual.setNombre(txtNombre.getText());
             infanteActual.setApellido(txtApellido.getText());
             infanteActual.setDni(Integer.parseInt(txtDni.getText()));
             infanteActual.setDireccion(txtDireccion.getText());
-            
-            // LE DECIMOS QUE GUARDE EL TELÉFONO
             infanteActual.setTelefono(txtTelefono.getText());
             
-            infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
-            infanteActual.setEdadEnMeses(Integer.parseInt(txtEdadMeses.getText()));
-            infanteActual.setSala(txtSala.getText());
-            infanteActual.setEmailContacto(txtEmailContacto.getText());
+            if (txtPapis != null) infanteActual.setPapis(txtPapis.getText());
+            if (txtEmail != null) infanteActual.setEmail(txtEmail.getText());
 
+            infanteActual.setFechaNacimiento(dpFechaNacimiento.getValue());
+            
+            // Protección: Si la edad quedó vacía, le asignamos 0 por defecto para que no crashee
+            int edad = 0;
+            if (txtEdadMeses.getText() != null && !txtEdadMeses.getText().trim().isEmpty()) {
+                edad = Integer.parseInt(txtEdadMeses.getText().trim());
+            }
+            infanteActual.setEdadEnMeses(edad);
+            
+            infanteActual.setSala(txtSala.getText());
+            
             infanteService.guardar(infanteActual);
 
             if (esNuevo) {
                 vacunacionService.generarCalendarioParaInfante(infanteActual);
+                informeAlta(infanteActual);
+            } else {
+                informeModificacion(infanteActual);
             }
 
             if (padreController != null) {
                 padreController.cargarTabla();
             }
+            
             cerrarVentana(event);
         } catch (Exception e) {
-            System.out.println("Error al guardar: Verifica los datos ingresados.");
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Interno");
+            alert.setHeaderText("No se pudo guardar el infante");
+            alert.setContentText("Causa: " + e.getMessage() + "\nRevisá la consola para más detalles.");
+            alert.showAndWait();
         }
     }
 
@@ -129,5 +175,42 @@ public class ViewInfanteFormController {
     private void cerrarVentana(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    private void informeAlta(Infante infante){
+        String correoDestino = infante.getEmail();
+        if (correoDestino == null || correoDestino.isEmpty()) return;
+
+        emailService.enviar(
+                correoDestino,
+                "Cambio de estado del infante",
+                "Hola,\n\n"
+                        + "El estado del infante "
+                        + infante.getNombre()
+                        + " "
+                        + infante.getApellido()
+                        + " fue dado de alta en el jardin Azucena Villaflor "
+                        + ".\n\n"
+                        + "Saludos."
+        );
+    }
+
+    private void informeModificacion(Infante infante){
+        String correoDestino = infante.getEmail();
+        if (correoDestino == null || correoDestino.isEmpty()) return;
+
+        emailService.enviar(
+                correoDestino,
+                "Datos actualizados",
+                "Hola,\n\n"
+                        + "Los datos del infante han sido actualizados:\n"
+                        + "DNI: " + infante.getDni() + "\n"
+                        + "Nombre: " + infante.getNombre() + " " + infante.getApellido() + "\n"
+                        + "Nacimiento: " + infante.getFechaNacimiento() + "\n"
+                        + "Sala: " + infante.getSala() + "\n"
+                        + "Teléfono: " + infante.getTelefono() + "\n"
+                        + "Dirección: " + infante.getDireccion() + "\n\n"
+                        + "Saludos."
+        );
     }
 }
