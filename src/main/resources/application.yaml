@@ -23,7 +23,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: jardin.unla.notificaciones@gmail.com
-    password: "clavedeaplicacion"
+    password: "ohdkhozrtgkdvqtd"
     properties:
       mail:
         smtp:

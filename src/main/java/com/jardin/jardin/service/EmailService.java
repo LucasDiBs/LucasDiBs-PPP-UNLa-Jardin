@@ -16,7 +16,7 @@ public class EmailService {
         mailSender.setPort(587);
         //Estos dos campos deben modificarse con los correctos para poder probar el sistema de avisos por mail
         mailSender.setUsername("jardin.unla.notificaciones@gmail.com");
-        mailSender.setPassword("clavedeaplicacion"); 
+        mailSender.setPassword("ohdkhozrtgkdvqtd"); 
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
@@ -48,7 +48,7 @@ public class EmailService {
             JavaMailSenderImpl mailSender = getMailSender();
             
             SimpleMailMessage mensaje = new SimpleMailMessage();
-            mensaje.setFrom("ivansofia357@gmail.com");
+            mensaje.setFrom("jardin.unla.notificaciones@gmail.com");
             mensaje.setTo(destinatario);
             mensaje.setSubject("Aviso de Vacunación - Jardín UNLa");
             mensaje.setText("Estimada familia,\n\n" +

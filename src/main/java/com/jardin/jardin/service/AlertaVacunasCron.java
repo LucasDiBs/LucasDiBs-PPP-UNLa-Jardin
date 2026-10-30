@@ -25,7 +25,7 @@ public class AlertaVacunasCron {
     private EmailService emailService;
 
     //Descomentar la linea de abajo para probar localmente si se envia mail
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     // Ejecuta todos los días a las 9:00 AM
     //@Scheduled(cron = "0 0 9 * * *")
     public void buscarVacunasProximas() {
