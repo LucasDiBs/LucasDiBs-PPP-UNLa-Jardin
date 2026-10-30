@@ -25,9 +25,9 @@ public class AlertaVacunasCron {
     private EmailService emailService;
 
     //Descomentar la linea de abajo para probar localmente si se envia mail
-    @Scheduled(cron = "*/30 * * * * *")
-    // Ejecuta todos los días a las 9:00 AM
-    //@Scheduled(cron = "0 0 9 * * *")
+    //@Scheduled(cron = "*/30 * * * * *")
+    // Ejecuta todos los días a las 9:00 AM (comentar la linea de abajo para probar notificaciones por mail)
+    @Scheduled(cron = "0 0 9 * * *")
     public void buscarVacunasProximas() {
         List<CalendarioInfante> pendientes = calendarioRepository.findByAplicadaFalse();
         LocalDate hoy = LocalDate.now();
